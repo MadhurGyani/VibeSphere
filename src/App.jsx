@@ -2,22 +2,33 @@ import { useState } from 'react'
 
 import './App.css'
 import { Route, Routes } from 'react-router-dom'
-import SigninForm from './_auth/SigninForm'
+import SigninForm from './_auth/Forms/SigninForm'
+import { Home } from './_root/Pages'
+import SignupForm from './_auth/Forms/SignupForm'
+import AuthLayout from './_auth/AuthLayout'
+import RootLayout from './_root/RootLayout'
 
 function App() {
 
   return (
     <>
-    <main className='h-screen flex'>
-      <Routes>
-        {/* public routes */}
-        <Route path='/sign-in' element={<SigninForm/>}/>
+      <main className='h-screen flex'>
+        <Routes>
+          {/* public routes */}
+          <Route element={<AuthLayout />}>
+            <Route path='/sign-in' element={<SigninForm />} />
+            <Route path='/sign-up' element={<SignupForm />} />
+          </Route>
 
-        {/* private routes */}
-        
+          {/* private routes */}
+          <Route element={<RootLayout />}>
+            <Route index element={<Home />} />
+          </Route>
 
-      </Routes>
-    </main>
+
+
+        </Routes>
+      </main>
     </>
   )
 }
