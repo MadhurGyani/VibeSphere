@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient,useInfiniteQuery } from "@tanstac
 import { 
     createUserAccount,
     signInAccount,
+    signOutAccount,
 
  } from "../appwrite/api";
 
@@ -15,5 +16,11 @@ export const useCreateUserAccount = () => {
     return useMutation({
       mutationFn: (user) =>
         signInAccount(user),
+    });
+  };
+
+  export const useSignOutAccount = () => {
+    return useMutation({
+      mutationFn: signOutAccount,
     });
   };

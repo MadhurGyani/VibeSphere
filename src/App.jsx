@@ -26,8 +26,9 @@ function App() {
             <Route index element={<Home />} />
           </Route>
 
-          <Toaster/>
         </Routes>
+        <Toaster/>
+
       </main>
     </>
   )
