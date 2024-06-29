@@ -3,7 +3,7 @@ import { useState } from 'react'
 import './App.css'
 import { Route, Routes } from 'react-router-dom'
 import SigninForm from './_auth/Forms/SigninForm'
-import { Home } from './_root/Pages'
+import { AllUsers, CreatePost, EditPost, Explore, Home, PostDetails, Profile, Saved, UpdateProfile } from './_root/Pages'
 import SignupForm from './_auth/Forms/SignupForm'
 import AuthLayout from './_auth/AuthLayout'
 import RootLayout from './_root/RootLayout'
@@ -23,8 +23,15 @@ function App() {
 
           {/* private routes */}
           <Route element={<RootLayout />}>
-            <Route index element={<Home />} />
-          </Route>
+          <Route index element={<Home />} />
+          <Route path="/explore" element={<Explore />} />
+          <Route path="/saved" element={<Saved />} />
+          <Route path="/all-users" element={<AllUsers />} />
+          <Route path="/create-post" element={<CreatePost />} />
+          <Route path="/update-post/:id" element={<EditPost />} />
+          <Route path="/posts/:id" element={<PostDetails />} />
+          <Route path="/profile/:id/*" element={<Profile />} />
+          <Route path="/update-profile/:id" element={<UpdateProfile />} />          </Route>
 
         </Routes>
         <Toaster/>

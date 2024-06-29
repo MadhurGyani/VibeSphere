@@ -1,8 +1,8 @@
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { sidebarLinks } from "@/constants";
-//import { Loader } from "@/components/shared";
+import Loader from "@/components/shared/Loader";
 import { Button } from "@/components/ui/button";
-import { useSignOutAccount } from "@/lib/react-query/queries";
+import { useSignOutAccount } from "@/lib/react-query/queryAndMutations";
 import { useUserContext, INITIAL_USER } from "@/context/AuthContext";
 
 const LeftSidebar = () => {
@@ -52,26 +52,19 @@ const LeftSidebar = () => {
 
         <ul className="flex flex-col gap-6">
           {sidebarLinks.map((link) => {
-            const isActive = pathname === link.route;
-
             return (
               <li
                 key={link.label}
-                className={`leftsidebar-link group ${
-                  isActive && "bg-primary-500"
-                }`}
+                className="leftsidebar-link group"
               >
                 <NavLink
                   to={link.route}
-                  className="flex gap-4 items-center p-4"
-                  activeClassName="bg-primary-500"
+                  className={({ isActive }) => `flex gap-4 items-center p-4 ${isActive ? 'bg-primary-500' : ''}`}
                 >
                   <img
                     src={link.imgURL}
                     alt={link.label}
-                    className={`group-hover:invert-white ${
-                      isActive && "invert-white"
-                    }`}
+                    className={`group-hover:invert-white ${pathname === link.route ? 'invert-white' : ''}`}
                   />
                   {link.label}
                 </NavLink>
@@ -86,7 +79,7 @@ const LeftSidebar = () => {
         className="shad-button_ghost"
         onClick={(e) => handleSignOut(e)}
       >
-        <img src="/assets/icons/logout.svg" alt="logout" />
+        <img src="/icons/logout.svg" alt="logout" />
         <p className="small-medium lg:base-medium">Logout</p>
       </Button>
     </nav>
