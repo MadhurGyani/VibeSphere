@@ -15,7 +15,10 @@ import { Button } from "@/components/ui/button";
 import { SignupValidation } from "@/lib/validation";
 import Loader from "@/components/shared/Loader";
 import { Link, useNavigate } from "react-router-dom";
-import { useCreateUserAccount, useSignInAccount } from "@/lib/react-query/queryAndMutations";
+import {
+  useCreateUserAccount,
+  useSignInAccount,
+} from "@/lib/react-query/queryAndMutations";
 import { useUserContext } from "@/context/AuthContext";
 
 function SignupForm() {
@@ -35,8 +38,10 @@ function SignupForm() {
   });
 
   // Queries
-  const { mutateAsync: createUserAccount, isPending: isCreatingAccount } = useCreateUserAccount();
-  const { mutateAsync: signInAccount, isPending: isSigningInUser } = useSignInAccount();
+  const { mutateAsync: createUserAccount, isPending: isCreatingAccount } =
+    useCreateUserAccount();
+  const { mutateAsync: signInAccount, isPending: isSigningInUser } =
+    useSignInAccount();
 
   // Define a submit handler
   async function onSubmit(values) {
@@ -53,11 +58,13 @@ function SignupForm() {
       });
 
       if (!session) {
-        toast({ title: "Something went wrong. Please login to your new account" });
+        toast({
+          title: "Something went wrong. Please login to your new account",
+        });
         navigate("/sign-in");
         return;
       }
-console.log("hii");
+      console.log("hii");
       const isLoggedIn = await checkAuthUser();
       if (isLoggedIn) {
         methods.reset();
@@ -75,11 +82,16 @@ console.log("hii");
     <FormProvider {...methods}>
       <div className="sm:w-420 flex-center flex-col">
         <img className="h-16" src="images/logoV.png" alt="logo" />
-        <h2 className="h3-bold md:h2-bold pt-5 sm:pt-12">Create a new account</h2>
+        <h2 className="h3-bold md:h2-bold pt-5 sm:pt-12">
+          Create a new account
+        </h2>
         <p className="text-light-3 small-medium md:base-regular mt-2">
           To use vibesphere, Please enter your details
         </p>
-        <form onSubmit={methods.handleSubmit(onSubmit)} className="flex flex-col gap-5 w-full mt-4">
+        <form
+          onSubmit={methods.handleSubmit(onSubmit)}
+          className="flex flex-col gap-5 w-full mt-4"
+        >
           <FormField
             control={methods.control}
             name="name"
@@ -133,16 +145,21 @@ console.log("hii");
             )}
           />
           <Button type="submit" className="shad-button_primary">
-            {(isCreatingAccount || isSigningInUser) ? (
+            {isCreatingAccount || isSigningInUser ? (
               <div className="flex-center gap-2">
                 <Loader /> Loading...
               </div>
-            ) : "Sign up"}
+            ) : (
+              "Sign up"
+            )}
           </Button>
 
           <p className="text-small-regular text-light-2 text-center mt-2">
             Already have an account?
-            <Link to="/sign-in" className="text-primary-500 text-small-semibold ml-1">
+            <Link
+              to="/sign-in"
+              className="text-primary-500 text-small-semibold ml-1"
+            >
               Log in
             </Link>
           </p>

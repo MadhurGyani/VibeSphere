@@ -16,8 +16,8 @@ const INITIAL_STATE = {
   user: INITIAL_USER,
   isLoading: false,
   isAuthenticated: false,
-  setUser: () => {},
-  setIsAuthenticated: () => {},
+  setUser: () => { },
+  setIsAuthenticated: () => { },
   checkAuthUser: async () => false,
 };
 
@@ -60,7 +60,7 @@ export function AuthProvider({ children }) {
     const cookieFallback = localStorage.getItem("cookieFallback");
     if (
       cookieFallback === "[]" ||
-    //  cookieFallback === null ||
+      //  cookieFallback === null ||
       cookieFallback === undefined
     ) {
       navigate("/sign-in");

@@ -40,24 +40,24 @@ function SigninForm() {
     try {
       // Check if there is an active session
       const isLoggedIn = await checkAuthUser();
-  
+
       // If there is an active session, handle it
       if (isLoggedIn) {
         // Optionally, prompt the user to log out or handle it automatically
         // Example: logout functionality
         await account.deleteSession('current'); // Replace with appropriate method
-  
+
         // Proceed with signing in
         const session = await signInAccount({
           email: values.email,
           password: values.password,
         });
-  
+
         if (!session) {
           toast({ title: "Something went wrong. Please try again." });
           return;
         }
-  
+
         // After successful sign-in, reset form and navigate
         methods.reset();
         navigate("/");
@@ -67,12 +67,12 @@ function SigninForm() {
           email: values.email,
           password: values.password,
         });
-  
+
         if (!session) {
           toast({ title: "Something went wrong. Please try again." });
           return;
         }
-  
+
         // After successful sign-in, reset form and navigate
         methods.reset();
         navigate("/");
