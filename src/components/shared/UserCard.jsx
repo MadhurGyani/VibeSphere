@@ -1,6 +1,6 @@
 
 import { Link } from "react-router-dom";
-import {Button} from "../ui/button";
+import { Button } from "../ui/button";
 
 const UserCard = ({ user }) => {
   return (
@@ -12,11 +12,13 @@ const UserCard = ({ user }) => {
       />
 
       <div className="flex-center flex-col gap-1">
+
         <p className="base-medium text-light-1 text-center line-clamp-1">
-          {user.name}
+          {user.name}{user.royal ? '👑' : null}
         </p>
         <p className="small-regular text-light-3 text-center line-clamp-1">
           @{user.username}
+
         </p>
       </div>
 

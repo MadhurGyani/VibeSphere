@@ -26,7 +26,7 @@ const PostCard = ({ post }) => {
 
           <div className="flex flex-col">
             <p className="base-medium lg:body-bold text-light-1">
-              {post.creator.name}
+              {post.creator.name}{post.creator.royal ? '👑' : null}
             </p>
             <div className="flex-center gap-2 text-light-3">
               <p className="subtle-semibold lg:small-regular ">
@@ -64,13 +64,13 @@ const PostCard = ({ post }) => {
           </ul>
         </div>
         {
-          
-            <img
-              src={(post.mediaType === "image" ? post.mediaUrl :post.thumbnailUrl) || "/icons/profile-placeholder.svg"} // Updated asset path
-              alt="post image"
-              className="post-card_img"
-            />
-          
+
+          <img
+            src={(post.mediaType === "image" ? post.mediaUrl : post.thumbnailUrl) || "/icons/profile-placeholder.svg"} // Updated asset path
+            alt="post image"
+            className="post-card_img"
+          />
+
         }
       </Link>
 

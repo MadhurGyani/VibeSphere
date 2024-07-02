@@ -52,7 +52,10 @@ export async function saveUserToDB(user) {
 
 export async function signInAccount(user) {
   try {
-    const session = await account.createEmailPasswordSession(user.email, user.password);
+    const session = await account.createEmailPasswordSession(
+      user.email,
+      user.password
+    );
     return session;
   } catch (error) {
     console.error(error);
@@ -121,17 +124,17 @@ export async function createPost(post) {
   try {
     const uploadedFile = await uploadFile(post.file[0]);
 
-    if (!uploadedFile) throw new Error('File upload failed');
+    if (!uploadedFile) throw new Error("File upload failed");
 
     const fileType = getMediaType(post.file[0]);
 
     const fileUrl = getFilePreview(uploadedFile.$id);
     if (!fileUrl || fileType === "other") {
       await deleteFile(uploadedFile.$id);
-      throw new Error('Invalid file type or URL');
+      throw new Error("Invalid file type or URL");
     }
 
-    const tags = post.tags?.replace(/ /g, '').split(',') || [];
+    const tags = post.tags?.replace(/ /g, "").split(",") || [];
 
     const newPost = await databases.createDocument(
       appwriteConfig.databaseId,
@@ -150,7 +153,7 @@ export async function createPost(post) {
 
     if (!newPost) {
       await deleteFile(uploadedFile.$id);
-      throw new Error('Failed to create post');
+      throw new Error("Failed to create post");
     }
 
     // Trigger cloud function for video processing
@@ -166,7 +169,7 @@ export async function createPost(post) {
     //     },
     //     body: JSON.stringify({ fileId: uploadedFile.$id }),
     //   });
-      
+
     //   console.log('Video processor response:', response);
 
     //   if (!response.ok) {
@@ -188,13 +191,11 @@ export async function createPost(post) {
   }
 }
 
-
 //******************************* GET THUMBNAIL
 // function getThumbnail(fileId) {
 //   console.log( `${import.meta.env.VITE_APPWRITE_URL}/storage/buckets/${import.meta.env.VITE_APPWRITE_STORAGE_ID}/files/${fileId}/view`);
 //   return `${import.meta.env.VITE_APPWRITE_URL}/storage/buckets/${import.meta.env.VITE_APPWRITE_STORAGE_ID}/files/${fileId}/view`;
 // }
-
 
 // ============================== UPLOAD FILE
 export async function uploadFile(file) {
@@ -214,10 +215,7 @@ export async function uploadFile(file) {
 // ============================== GET FILE URL
 export function getFilePreview(fileId) {
   try {
-    const fileUrl = storage.getFileView(
-      appwriteConfig.storageId,
-      fileId
-    );
+    const fileUrl = storage.getFileView(appwriteConfig.storageId, fileId);
 
     if (!fileUrl) throw new Error();
 
@@ -231,7 +229,7 @@ export function getFilePreview(fileId) {
 export async function deleteFile(fileId) {
   try {
     await storage.deleteFile(appwriteConfig.storageId, fileId);
-    return { status: 'ok' };
+    return { status: "ok" };
   } catch (error) {
     console.error(error);
   }
@@ -243,7 +241,7 @@ export async function searchPosts(searchTerm) {
     const posts = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.postCollectionId,
-      [Query.search('caption', searchTerm)]
+      [Query.search("caption", searchTerm)]
     );
 
     if (!posts) throw new Error();
@@ -255,7 +253,7 @@ export async function searchPosts(searchTerm) {
 }
 
 export async function getInfinitePosts({ pageParam }) {
-  const queries = [Query.orderDesc('$updatedAt'), Query.limit(9)];
+  const queries = [Query.orderDesc("$updatedAt"), Query.limit(9)];
 
   if (pageParam) {
     queries.push(Query.cursorAfter(pageParam.toString()));
@@ -321,7 +319,7 @@ export async function updatePost(post) {
     }
 
     // Convert tags into array
-    const tags = post.tags?.replace(/ /g, '').split(',') || [];
+    const tags = post.tags?.replace(/ /g, "").split(",") || [];
 
     //  Update post
     const updatedPost = await databases.updateDocument(
@@ -329,14 +327,14 @@ export async function updatePost(post) {
       appwriteConfig.postCollectionId,
       post.postId,
       {
-        mediaType:post.mediaType,
+        mediaType: post.mediaType,
         caption: post.caption,
         mediaUrl: media.mediaUrl,
         mediaId: media.mediaId,
         location: post.location,
         tags: tags,
-        mediaType:post.mediaType,
-        thumbnailUrl: post.thumbnailUrl
+        mediaType: post.mediaType,
+        thumbnailUrl: post.thumbnailUrl,
       }
     );
 
@@ -377,7 +375,7 @@ export async function deletePost(postId, mediaId) {
 
     await deleteFile(mediaId);
 
-    return { status: 'Ok' };
+    return { status: "Ok" };
   } catch (error) {
     console.error(error);
   }
@@ -435,7 +433,7 @@ export async function deleteSavedPost(savedRecordId) {
 
     if (!statusCode) throw new Error();
 
-    return { status: 'Ok' };
+    return { status: "Ok" };
   } catch (error) {
     console.error(error);
   }
@@ -449,7 +447,7 @@ export async function getUserPosts(userId) {
     const post = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.postCollectionId,
-      [Query.equal('creator', userId), Query.orderDesc('$createdAt')]
+      [Query.equal("creator", userId), Query.orderDesc("$createdAt")]
     );
 
     if (!post) throw new Error();
@@ -466,7 +464,7 @@ export async function getRecentPosts() {
     const posts = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.postCollectionId,
-      [Query.orderDesc('$createdAt'), Query.limit(20)]
+      [Query.orderDesc("$createdAt"), Query.limit(20)]
     );
 
     if (!posts) throw new Error();
@@ -483,7 +481,7 @@ export async function getRecentPosts() {
 
 // ============================== GET USERS
 export async function getUsers(limit) {
-  const queries = [Query.orderDesc('$createdAt')];
+  const queries = [Query.orderDesc("$createdAt")];
 
   if (limit) {
     queries.push(Query.limit(limit));
@@ -533,13 +531,13 @@ export async function updateUser(user) {
     if (hasFileToUpdate) {
       // Upload new file to Appwrite storage
       const uploadedFile = await uploadFile(user.file[0]);
-      if (!uploadedFile) throw new Error('File upload failed');
+      if (!uploadedFile) throw new Error("File upload failed");
 
       // Get new file URL
       const fileUrl = getFilePreview(uploadedFile.$id);
       if (!fileUrl) {
         await deleteFile(uploadedFile.$id);
-        throw new Error('File URL retrieval failed');
+        throw new Error("File URL retrieval failed");
       }
 
       image = { ...image, imageUrl: fileUrl, imageId: uploadedFile.$id };
@@ -565,7 +563,7 @@ export async function updateUser(user) {
         await deleteFile(image.imageId);
       }
       // If no new file uploaded, just throw error
-      throw new Error('User update failed');
+      throw new Error("User update failed");
     }
 
     // Safely delete old file after successful update

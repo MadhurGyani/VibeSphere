@@ -15,7 +15,7 @@ import { GridPostList, Loader } from "@/components/shared";
 
 
 
-const StatBlock = ({ value, label} ) => (
+const StatBlock = ({ value, label }) => (
   <div className="flex-center gap-2">
     <p className="small-semibold lg:body-bold text-primary-500">{value}</p>
     <p className="small-medium lg:base-medium text-light-2">{label}</p>
@@ -50,7 +50,7 @@ const Profile = () => {
           <div className="flex flex-col flex-1 justify-between md:mt-2">
             <div className="flex flex-col w-full">
               <h1 className="text-center xl:text-left h3-bold md:h1-semibold w-full">
-                {currentUser.name}
+                {currentUser.name}{currentUser.royal ? '👑' : null}
               </h1>
               <p className="small-regular md:body-medium text-light-3 text-center xl:text-left">
                 @{currentUser.username}
@@ -72,9 +72,8 @@ const Profile = () => {
             <div className={`${user.id !== currentUser.$id && "hidden"}`}>
               <Link
                 to={`/update-profile/${currentUser.$id}`}
-                className={`h-12 bg-dark-4 px-5 text-light-1 flex-center gap-2 rounded-lg ${
-                  user.id !== currentUser.$id && "hidden"
-                }`}>
+                className={`h-12 bg-dark-4 px-5 text-light-1 flex-center gap-2 rounded-lg ${user.id !== currentUser.$id && "hidden"
+                  }`}>
                 <img
                   src={"/icons/edit.svg"}
                   alt="edit"
@@ -99,9 +98,8 @@ const Profile = () => {
         <div className="flex max-w-5xl w-full">
           <Link
             to={`/profile/${id}`}
-            className={`profile-tab rounded-l-lg ${
-              pathname === `/profile/${id}` && "!bg-dark-3"
-            }`}>
+            className={`profile-tab rounded-l-lg ${pathname === `/profile/${id}` && "!bg-dark-3"
+              }`}>
             <img
               src={"/icons/posts.svg"}
               alt="posts"
@@ -112,9 +110,8 @@ const Profile = () => {
           </Link>
           <Link
             to={`/profile/${id}/liked-posts`}
-            className={`profile-tab rounded-r-lg ${
-              pathname === `/profile/${id}/liked-posts` && "!bg-dark-3"
-            }`}>
+            className={`profile-tab rounded-r-lg ${pathname === `/profile/${id}/liked-posts` && "!bg-dark-3"
+              }`}>
             <img
               src={"/icons/like.svg"}
               alt="like"

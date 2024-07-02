@@ -10,6 +10,7 @@ export const INITIAL_USER = {
   email: "",
   imageUrl: "",
   bio: "",
+  royal: false
 };
 
 const INITIAL_STATE = {
@@ -36,11 +37,12 @@ export function AuthProvider({ children }) {
       if (currentAccount) {
         setUser({
           id: currentAccount.$id,
-          name: currentAccount.name,
+          name: `${currentAccount.name}${currentAccount.royal ? '👑' : null}`,
           username: currentAccount.username,
           email: currentAccount.email,
           imageUrl: currentAccount.imageUrl,
           bio: currentAccount.bio,
+          royal: currentAccount.royal
         });
         setIsAuthenticated(true);
 
@@ -60,7 +62,7 @@ export function AuthProvider({ children }) {
     const cookieFallback = localStorage.getItem("cookieFallback");
     if (
       cookieFallback === "[]" ||
-      //  cookieFallback === null ||
+      cookieFallback === null ||
       cookieFallback === undefined
     ) {
       navigate("/sign-in");
