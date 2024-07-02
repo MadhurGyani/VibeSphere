@@ -21,6 +21,7 @@ const FileUploader = ({ fieldChange, mediaUrl }) => {
     onDrop,
     accept: {
       "image/*": [".png", ".jpeg", ".jpg"],
+      "video/*": [".mp4", ".mov", ".avi"],
     },
   });
 

@@ -44,9 +44,9 @@ const PostForm = ({ post, action }) => {
       const updatedPost = await updatePost({
         ...value,
         postId: post.$id,
-        mediaId: post.mediaUrl,
-        mediaUrl: post.mediaUrl,
-        mediaType: post.mediaType
+        mediaId: post.mediaId,
+        medaiUrl: post.mediaUrl,
+        mediaType: post.mediaType,
       });
 
       if (!updatedPost) {

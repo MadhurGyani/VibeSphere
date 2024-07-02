@@ -1,5 +1,6 @@
 import { ID, Query } from "appwrite";
 import { appwriteConfig, account, databases, storage, avatars } from "./config";
+import { getMediaType } from "../utils";
 
 // ************************************************ SIGN UP
 export async function createUserAccount(user) {
@@ -118,22 +119,20 @@ export async function signOutAccount() {
 // ============================== CREATE POST
 export async function createPost(post) {
   try {
-    // Upload file to appwrite storage
     const uploadedFile = await uploadFile(post.file[0]);
 
-    if (!uploadedFile) throw new Error();
+    if (!uploadedFile) throw new Error('File upload failed');
 
-    // Get file url
+    const fileType = getMediaType(post.file[0]);
+
     const fileUrl = getFilePreview(uploadedFile.$id);
-    if (!fileUrl) {
+    if (!fileUrl || fileType === "other") {
       await deleteFile(uploadedFile.$id);
-      throw new Error();
+      throw new Error('Invalid file type or URL');
     }
 
-    // Convert tags into array
     const tags = post.tags?.replace(/ /g, '').split(',') || [];
 
-    // Create post
     const newPost = await databases.createDocument(
       appwriteConfig.databaseId,
       appwriteConfig.postCollectionId,
@@ -145,20 +144,57 @@ export async function createPost(post) {
         mediaId: uploadedFile.$id,
         location: post.location,
         tags: tags,
-        mediaType:"image"
+        mediaType: fileType,
       }
     );
 
     if (!newPost) {
       await deleteFile(uploadedFile.$id);
-      throw new Error();
+      throw new Error('Failed to create post');
     }
+
+    // Trigger cloud function for video processing
+    // if (fileType === "video") {
+    //   console.log("Entering video processing section");
+
+    //   const response = await fetch(`${import.meta.env.VITE_APPWRITE_URL}/functions/${import.meta.env.VITE_APPWRITE_VIDEOPROCESSOR_ID}/executions`, {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       'X-Appwrite-Project': import.meta.env.VITE_APPWRITE_PROJECT_ID,
+    //       'X-Appwrite-Key': import.meta.env.VITE_APPWRITE_API_KEY,
+    //     },
+    //     body: JSON.stringify({ fileId: uploadedFile.$id }),
+    //   });
+      
+    //   console.log('Video processor response:', response);
+
+    //   if (!response.ok) {
+    //     throw new Error(`Failed to execute video processor: ${response.statusText}`);
+    //   }
+
+    //   const result = await response.json();
+    //   console.log('Video processor result:', result);
+
+    //   if (result && result.hlsUrls) {
+    //     // Update post with HLS URL and thumbnail URL
+    //     await updatePost({ ...newPost, mediaUrl: result.hlsUrls[0].url, thumbnailUrl: result.thumbnailUrl });
+    //   }
+    // }
 
     return newPost;
   } catch (error) {
     console.error(error);
   }
 }
+
+
+//******************************* GET THUMBNAIL
+// function getThumbnail(fileId) {
+//   console.log( `${import.meta.env.VITE_APPWRITE_URL}/storage/buckets/${import.meta.env.VITE_APPWRITE_STORAGE_ID}/files/${fileId}/view`);
+//   return `${import.meta.env.VITE_APPWRITE_URL}/storage/buckets/${import.meta.env.VITE_APPWRITE_STORAGE_ID}/files/${fileId}/view`;
+// }
+
 
 // ============================== UPLOAD FILE
 export async function uploadFile(file) {
@@ -265,7 +301,7 @@ export async function updatePost(post) {
 
   try {
     let media = {
-      mediaUrl: post.mediarl,
+      mediaUrl: post.mediaUrl,
       mediaId: post.mediaId,
     };
 
@@ -299,6 +335,8 @@ export async function updatePost(post) {
         mediaId: media.mediaId,
         location: post.location,
         tags: tags,
+        mediaType:post.mediaType,
+        thumbnailUrl: post.thumbnailUrl
       }
     );
 

@@ -1,3 +1,4 @@
+import VideoCard from "./VideoCard";
 import { Link } from "react-router-dom";
 import { PostStats } from "@/components/shared";
 import { multiFormatDateString } from "@/lib/utils";
@@ -62,12 +63,15 @@ const PostCard = ({ post }) => {
             ))}
           </ul>
         </div>
-
-        <img
-          src={post.mediaUrl || "/icons/profile-placeholder.svg"} // Updated asset path
-          alt="post image"
-          className="post-card_img"
-        />
+        {
+          
+            <img
+              src={(post.mediaType === "image" ? post.mediaUrl :post.thumbnailUrl) || "/icons/profile-placeholder.svg"} // Updated asset path
+              alt="post image"
+              className="post-card_img"
+            />
+          
+        }
       </Link>
 
       <PostStats post={post} userId={user.id} />
