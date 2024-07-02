@@ -55,3 +55,25 @@ export const multiFormatDateString = (timestamp = "") => {
 export const checkIsLiked = (likeList, userId) => {
   return likeList.includes(userId);
 };
+
+// Function to determine mediaType based on file extension
+export function getMediaType(file) {
+  const fileExtension = getFileExtension(file.name);
+  // Map file extensions to media types
+  if (imageExtensions.includes(fileExtension)) {
+    return 'image';
+  } else if (videoExtensions.includes(fileExtension)) {
+    return 'video';
+  } else {
+    return 'other'; // Handle other types as needed
+  }
+}
+
+// Helper function to get file extension
+function getFileExtension(filename) {
+  return filename.split('.').pop().toLowerCase();
+}
+
+// Example lists of file extensions for images and videos
+const imageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+const videoExtensions = ['mp4', 'mov', 'avi', 'mkv'];
