@@ -44,8 +44,9 @@ const PostForm = ({ post, action }) => {
       const updatedPost = await updatePost({
         ...value,
         postId: post.$id,
-        imageId: post.imageId,
-        imageUrl: post.imageUrl,
+        mediaId: post.mediaUrl,
+        mediaUrl: post.mediaUrl,
+        mediaType: post.mediaType
       });
 
       if (!updatedPost) {
@@ -97,7 +98,7 @@ const PostForm = ({ post, action }) => {
             <FormItem>
               <FormLabel className="shad-form_label">Add Photos</FormLabel>
               <FormControl>
-                <FileUploader fieldChange={field.onChange} mediaUrl={post?.imageUrl} />
+                <FileUploader fieldChange={field.onChange} mediaUrl={post?.mediaUrl} />
               </FormControl>
               <FormMessage className="shad-form_message" />
             </FormItem>

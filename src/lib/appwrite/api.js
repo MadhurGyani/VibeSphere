@@ -141,10 +141,11 @@ export async function createPost(post) {
       {
         creator: post.userId,
         caption: post.caption,
-        imageUrl: fileUrl,
-        imageId: uploadedFile.$id,
+        mediaUrl: fileUrl,
+        mediaId: uploadedFile.$id,
         location: post.location,
         tags: tags,
+        mediaType:"image"
       }
     );
 
@@ -163,7 +164,7 @@ export async function createPost(post) {
 export async function uploadFile(file) {
   try {
     const uploadedFile = await storage.createFile(
-      appwriteConfig.storageBucketId,
+      appwriteConfig.storageId,
       ID.unique(),
       file
     );
@@ -178,7 +179,7 @@ export async function uploadFile(file) {
 export function getFilePreview(fileId) {
   try {
     const fileUrl = storage.getFileView(
-      appwriteConfig.storageBucketId,
+      appwriteConfig.storageId,
       fileId
     );
 
@@ -193,7 +194,7 @@ export function getFilePreview(fileId) {
 // ============================== DELETE FILE
 export async function deleteFile(fileId) {
   try {
-    await storage.deleteFile(appwriteConfig.storageBucketId, fileId);
+    await storage.deleteFile(appwriteConfig.storageId, fileId);
     return { status: 'ok' };
   } catch (error) {
     console.error(error);
@@ -263,9 +264,9 @@ export async function updatePost(post) {
   const hasFileToUpdate = post.file.length > 0;
 
   try {
-    let image = {
-      imageUrl: post.imageUrl,
-      imageId: post.imageId,
+    let media = {
+      mediaUrl: post.mediarl,
+      mediaId: post.mediaId,
     };
 
     if (hasFileToUpdate) {
@@ -280,7 +281,7 @@ export async function updatePost(post) {
         throw new Error();
       }
 
-      image = { ...image, imageUrl: fileUrl, imageId: uploadedFile.$id };
+      media = { ...media, mediaUrl: fileUrl, mediaId: uploadedFile.$id };
     }
 
     // Convert tags into array
@@ -292,9 +293,10 @@ export async function updatePost(post) {
       appwriteConfig.postCollectionId,
       post.postId,
       {
+        mediaType:post.mediaType,
         caption: post.caption,
-        imageUrl: image.imageUrl,
-        imageId: image.imageId,
+        mediaUrl: media.mediaUrl,
+        mediaId: media.mediaId,
         location: post.location,
         tags: tags,
       }
@@ -304,7 +306,7 @@ export async function updatePost(post) {
     if (!updatedPost) {
       // Delete new file that has been recently uploaded
       if (hasFileToUpdate) {
-        await deleteFile(image.imageId);
+        await deleteFile(media.mediaId);
       }
 
       // If no new file uploaded, just throw error
@@ -313,7 +315,7 @@ export async function updatePost(post) {
 
     // Safely delete old file after successful update
     if (hasFileToUpdate) {
-      await deleteFile(post.imageId);
+      await deleteFile(post.mediaId);
     }
 
     return updatedPost;
@@ -323,8 +325,8 @@ export async function updatePost(post) {
 }
 
 // ============================== DELETE POST
-export async function deletePost(postId, imageId) {
-  if (!postId || !imageId) return;
+export async function deletePost(postId, mediaId) {
+  if (!postId || !mediaId) return;
 
   try {
     const statusCode = await databases.deleteDocument(
@@ -335,7 +337,7 @@ export async function deletePost(postId, imageId) {
 
     if (!statusCode) throw new Error();
 
-    await deleteFile(imageId);
+    await deleteFile(mediaId);
 
     return { status: 'Ok' };
   } catch (error) {

@@ -64,7 +64,7 @@ const PostCard = ({ post }) => {
         </div>
 
         <img
-          src={post.imageUrl || "/icons/profile-placeholder.svg"} // Updated asset path
+          src={post.mediaUrl || "/icons/profile-placeholder.svg"} // Updated asset path
           alt="post image"
           className="post-card_img"
         />

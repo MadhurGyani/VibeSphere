@@ -28,7 +28,7 @@ const PostDetails = () => {
   );
 
   const handleDeletePost = () => {
-    deletePost({ postId: id, imageId: post?.imageId });
+    deletePost({ postId: id, mediaId: post?.mediaId });
     navigate(-1);
   };
 
@@ -54,7 +54,7 @@ const PostDetails = () => {
       ) : (
         <div className="post_details-card">
           <img
-            src={post?.imageUrl}
+            src={post?.mediaUrl}
             alt="creator"
             className="post_details-img"
           />
