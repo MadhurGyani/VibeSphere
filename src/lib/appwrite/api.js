@@ -154,33 +154,33 @@ export async function createPost(post) {
     }
 
     // Trigger cloud function for video processing
-    if (fileType === "video") {
-      console.log("Entering video processing section");
+    // if (fileType === "video") {
+    //   console.log("Entering video processing section");
 
-      const response = await fetch(`${import.meta.env.VITE_APPWRITE_URL}/functions/${import.meta.env.VITE_APPWRITE_VIDEOPROCESSOR_ID}/executions`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Appwrite-Project': import.meta.env.VITE_APPWRITE_PROJECT_ID,
-          'X-Appwrite-Key': import.meta.env.VITE_APPWRITE_API_KEY,
-        },
-        body: JSON.stringify({ fileId: uploadedFile.$id }),
-      });
+    //   const response = await fetch(`${import.meta.env.VITE_APPWRITE_URL}/functions/${import.meta.env.VITE_APPWRITE_VIDEOPROCESSOR_ID}/executions`, {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       'X-Appwrite-Project': import.meta.env.VITE_APPWRITE_PROJECT_ID,
+    //       'X-Appwrite-Key': import.meta.env.VITE_APPWRITE_API_KEY,
+    //     },
+    //     body: JSON.stringify({ fileId: uploadedFile.$id }),
+    //   });
       
-      console.log('Video processor response:', response);
+    //   console.log('Video processor response:', response);
 
-      if (!response.ok) {
-        throw new Error(`Failed to execute video processor: ${response.statusText}`);
-      }
+    //   if (!response.ok) {
+    //     throw new Error(`Failed to execute video processor: ${response.statusText}`);
+    //   }
 
-      const result = await response.json();
-      console.log('Video processor result:', result);
+    //   const result = await response.json();
+    //   console.log('Video processor result:', result);
 
-      if (result && result.hlsUrls) {
-        // Update post with HLS URL and thumbnail URL
-        await updatePost({ ...newPost, mediaUrl: result.hlsUrls[0].url, thumbnailUrl: result.thumbnailUrl });
-      }
-    }
+    //   if (result && result.hlsUrls) {
+    //     // Update post with HLS URL and thumbnail URL
+    //     await updatePost({ ...newPost, mediaUrl: result.hlsUrls[0].url, thumbnailUrl: result.thumbnailUrl });
+    //   }
+    // }
 
     return newPost;
   } catch (error) {
