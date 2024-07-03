@@ -1,7 +1,3 @@
-Certainly! Here's a basic README template for your Vibesphere project:
-
----
-
 # Vibesphere
 
 Vibesphere is a social media application built with React and Appwrite, aimed at providing a platform for users to share posts, connect with others, and explore content.
