@@ -24,6 +24,11 @@ export const sidebarLinks = [
     route: "/create-post",
     label: "Create Post",
   },
+  {
+    imgURL: "/icons/crown.svg",
+    route: "/payment",
+    label: "Payment",
+  }
 ];
 
 export const bottombarLinks = [
@@ -47,4 +52,9 @@ export const bottombarLinks = [
     route: "/create-post",
     label: "Create",
   },
+  {
+    imgURL: "/icons/crown.svg",
+    route: "/payment",
+    label: "Payment",
+  }
 ];

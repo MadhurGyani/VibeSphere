@@ -24,7 +24,7 @@ const UpdateProfile = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { user, setUser } = useUserContext();
-  const form = useForm < z.infer < typeof ProfileValidation >> ({
+  const form = useForm ({
     resolver: zodResolver(ProfileValidation),
     defaultValues: {
       file: [],

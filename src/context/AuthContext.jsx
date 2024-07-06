@@ -37,7 +37,7 @@ export function AuthProvider({ children }) {
       if (currentAccount) {
         setUser({
           id: currentAccount.$id,
-          name: `${currentAccount.name}${currentAccount.royal ? '👑' : null}`,
+          name: `${currentAccount.name}${currentAccount.royal ? '👑' : ''}`,
           username: currentAccount.username,
           email: currentAccount.email,
           imageUrl: currentAccount.imageUrl,

@@ -553,6 +553,8 @@ export async function updateUser(user) {
         bio: user.bio,
         imageUrl: image.imageUrl,
         imageId: image.imageId,
+        royal: user.royal
+        
       }
     );
 
