@@ -27,7 +27,8 @@ const Payment = () => {
     };
 
     try {
-      const response = await axios.post('https://vibespherebackend.onrender.com/api/v1/payment/createPayment', body, { headers });
+      console.log('enter');
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/payment/createPayment`, body, { headers });
       console.log('RESPONSE ', response);
       const { status } = response;
       console.log('STATUS ', status);
@@ -46,7 +47,7 @@ const Payment = () => {
     <div className="flex flex-col items-center justify-center min-h-screen w-full  text-slate-200">
       <h1 className="text-3xl font-bold mb-6">Buy Royal Badge</h1>
       <StripeCheckout
-        stripeKey={import.meta.env.VITE_STRIPE_SK_KEY}
+        stripeKey={import.meta.env.VITE_STRIPE_PK_KEY}
         token={makePayment}
         name="Buy Royal"
         amount={(product.price * 100)/80}

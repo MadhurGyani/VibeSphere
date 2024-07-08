@@ -33,7 +33,9 @@ export function AuthProvider({ children }) {
   const checkAuthUser = async () => {
     setIsLoading(true);
     try {
+    //  console.log("auth");
       const currentAccount = await getCurrentUser();
+     // console.log(currentAccount);
       if (currentAccount) {
         setUser({
           id: currentAccount.$id,
