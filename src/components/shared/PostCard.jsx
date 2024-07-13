@@ -1,8 +1,9 @@
-import VideoCard from "./VideoCard";
 import { Link } from "react-router-dom";
 import { PostStats } from "@/components/shared";
 import { multiFormatDateString } from "@/lib/utils";
 import { useUserContext } from "@/context/AuthContext";
+import VideoPlayer from "./VideoPlayer";
+
 
 const PostCard = ({ post }) => {
   const { user } = useUserContext();
@@ -64,13 +65,18 @@ const PostCard = ({ post }) => {
           </ul>
         </div>
         {
+          post.mediaType === "image" ?
 
-          <img
-            src={(post.mediaType === "image" ? post.mediaUrl : post.thumbnailUrl) || "/icons/profile-placeholder.svg"} // Updated asset path
+          (<img
+            src={ post.mediaUrl  || "/icons/profile-placeholder.svg"} // Updated asset path
             alt="post image"
             className="post-card_img"
-          />
+          />)
 
+          :
+          (<div onClick={(e)=> e.preventDefault()} className="rounded-3xl mb-5 border border-gray-800 ">
+            <VideoPlayer url={ post.mediaUrl } hide={false}/>
+          </div>)
         }
       </Link>
 

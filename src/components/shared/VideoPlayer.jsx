@@ -1,54 +1,60 @@
-import React, { useRef, useEffect } from "react";
-import videojs from "video.js";
-import "video.js/dist/video-js.css";
+import React from 'react';
+import ReactPlayer from 'react-player';
+import { IoPlay, IoPause, IoVolumeMute, IoVolumeHigh } from 'react-icons/io5';
 
-export const VideoPlayer = (props) => {
-  const videoRef = useRef(null);
-  const playerRef = useRef(null);
-  const { options, onReady } = props;
+const VideoPlayer = ({ url , hide=false }) => {
+  const [playing, setPlaying] = React.useState(true);
+  const [muted, setMuted] = React.useState(true);
 
-  useEffect(() => {
-    // Make sure Video.js player is only initialized once
-    if (!playerRef.current) {
-      // The Video.js player needs to be _inside_ the component el for React 18 Strict Mode.
-      const videoElement = document.createElement("video-js");
+  const togglePlaying = () => {
+    setPlaying((prevState) => !prevState);
+  };
 
-      videoElement.classList.add("vjs-big-play-centered");
-      videoRef.current.appendChild(videoElement);
-
-      const player = (playerRef.current = videojs(videoElement, options, () => {
-        videojs.log("player is ready");
-        onReady && onReady(player);
-      }));
-
-      // You could update an existing player in the `else` block here
-      // on prop change, for example:
-    } else {
-      const player = playerRef.current;
-
-      player.autoplay(options.autoplay);
-      player.src(options.sources);
-    }
-  }, [options, videoRef]);
-
-  // Dispose the Video.js player when the functional component unmounts
-  useEffect(() => {
-    const player = playerRef.current;
-
-    return () => {
-      if (player && !player.isDisposed()) {
-        player.dispose();
-        playerRef.current = null;
-      }
-    };
-  }, [playerRef]);
+  const toggleMuted = () => {
+    setMuted((prevState) => !prevState);
+  };
 
   return (
-    <div
-      data-vjs-player
-      style={{ width: "600px" }}
-    >
-      <div ref={videoRef} />
+    <div className="relative rounded-3xl overflow-hidden">
+      <ReactPlayer
+        url={url}
+        playing={playing}
+        muted={muted}
+        width="100%"
+        height="100%"
+        config={{
+          file: {
+            attributes: {
+              controlsList: 'nodownload', // Disable download button
+              disablePictureInPicture: true, // Disable Picture-in-Picture mode
+            },
+          },
+        }}
+      />
+      {/* Custom Play/Pause Button */}
+      {!playing && (
+        <button
+          className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 transition-opacity opacity-0 hover:opacity-100 focus:outline-none"
+          onClick={togglePlaying}
+        >
+          <IoPlay className="text-white text-3xl" />
+        </button>
+      )}
+      {playing && (
+        <button
+          className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 transition-opacity opacity-0 hover:opacity-100 focus:outline-none"
+          onClick={togglePlaying}
+        >
+          <IoPause className="text-white text-3xl" />
+        </button>
+      )}
+      {/* Mute/Unmute Button */}
+      <button
+        className={`absolute bottom-3 right-3 bg-black bg-opacity-50 p-2 rounded-full text-white hover:bg-opacity-75 focus:outline-none ${hide?"hidden":""}`}
+        onClick={toggleMuted}
+      >
+        {muted ? <IoVolumeMute className="text-xl" /> : <IoVolumeHigh className="text-xl" />}
+      </button>
     </div>
   );
 };

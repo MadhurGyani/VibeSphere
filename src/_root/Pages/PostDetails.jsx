@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui";
 import { Loader } from "@/components/shared";
 import { GridPostList, PostStats } from "@/components/shared";
-
+import VideoPlayer from "@/components/shared/VideoPlayer";
 import {
   useGetPostById,
   useGetUserPosts,
@@ -53,11 +53,18 @@ const PostDetails = () => {
         <Loader />
       ) : (
         <div className="post_details-card">
-          <img
-            src={post?.mediaUrl}
-            alt="creator"
-            className="post_details-img"
-          />
+          {
+            post.mediaType==='image'?
+            (<img
+              src={post?.mediaUrl}
+              alt="creator"
+              className="post_details-img"
+            />)
+            :
+            (<div className="rounded-3xl p-5  post_details-img ">
+            <VideoPlayer url={ post.mediaUrl } hide={false}/>
+          </div>)
+          }
 
           <div className="post_details-info">
             <div className="flex-between w-full">

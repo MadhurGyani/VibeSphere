@@ -96,7 +96,7 @@ const PostForm = ({ post, action }) => {
           name="file"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="shad-form_label">Add Photos</FormLabel>
+              <FormLabel className="shad-form_label">Add Photos or Video</FormLabel>
               <FormControl>
                 <FileUploader fieldChange={field.onChange} mediaUrl={post?.mediaUrl} />
               </FormControl>

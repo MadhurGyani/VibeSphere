@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { PostStats } from "@/components/shared";
 import { useUserContext } from "@/context/AuthContext";
+import VideoPlayer from "./VideoPlayer";
 
 const GridPostList = ({ posts, showUser = true, showStats = true }) => {
   const { user } = useUserContext();
@@ -10,11 +11,13 @@ const GridPostList = ({ posts, showUser = true, showStats = true }) => {
       {posts.map((post) => (
         <li key={post.$id} className="relative min-w-80 h-80">
           <Link to={`/posts/${post.$id}`} className="grid-post_link">
-            <img
+           {post.mediaType==='image'? <img
               src={post.mediaUrl}
               alt="post"
               className="h-full w-full object-cover"
             />
+            : <VideoPlayer url={post.mediaUrl} hide={true} className="h-full w-full object-cover"/>
+          }
           </Link>
 
           <div className="grid-post_user">
